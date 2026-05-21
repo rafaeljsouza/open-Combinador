@@ -4,11 +4,11 @@
 
 Combinador connects public managers and researchers to co-create open solutions for real public-sector challenges.
 
-This edition is fully migrated away from Firebase/Google runtime services and uses a self-hostable open-source stack with Supabase.
+Originally done using Firebase, This edition is fully migrated away from Firebase/Google runtime services and uses a self-hostable open-source stack with Supabase.
 
 ### Repository
 
-- Main repository: `https://github.com/your-org/combinador` (placeholder)
+- Main repository: `[https://github.com/your-org/combinador](https://github.com/rafaeljsouza/open-Combinador)` 
 - Creator: Rafael Souza
 
 ### Stack
@@ -60,19 +60,15 @@ npm run build
 - Frontend must use only `VITE_SUPABASE_PUBLISHABLE_KEY`.
 - Never expose `SUPABASE_SECRET_KEY` in frontend environment variables.
 
-### Migration notes
-
-- See `docs/MIGRATION_TO_OPEN_SOURCE.md`
-
 ## Portugues
 
 O Combinador conecta gestores publicos e pesquisadores para co-criar solucoes abertas para desafios reais do setor publico.
 
-Esta edicao foi totalmente migrada para fora de servicos Google/Firebase em runtime e usa uma stack open-source auto-hospedavel com Supabase.
+Originalmente feito com Firebase, esta edição foi totalmente migrada para fora de serviços Google/Firebase em runtime e usa uma stack open-source auto-hospedavel com Supabase.
 
 ### Repositorio
 
-- Repositorio principal: `https://github.com/your-org/combinador` (placeholder)
+- Repositorio principal: `[https://github.com/your-org/combinador`](https://github.com/rafaeljsouza/open-Combinador) (placeholder)
 - Criador: Rafael Souza
 
 ### Stack
@@ -81,7 +77,7 @@ Esta edicao foi totalmente migrada para fora de servicos Google/Firebase em runt
 - Backend: Supabase (Auth + Postgres + RLS)
 - Estilizacao: Tailwind CSS
 
-### Configuracao local
+### Configuração local
 
 1. Instale dependencias:
 
@@ -119,11 +115,7 @@ npm run build
 - Siga a direcao open-source e auto-hospedavel do projeto
 - Execute `npm run build` antes de abrir PR
 
-### Notas de seguranca
+### Notas de segurança
 
 - O frontend deve usar apenas `VITE_SUPABASE_PUBLISHABLE_KEY`.
-- Nunca exponha `SUPABASE_SECRET_KEY` em variaveis de ambiente do frontend.
-
-### Notas de migracao
-
-- Veja `docs/MIGRATION_TO_OPEN_SOURCE.md`
+- Nunca exponha `SUPABASE_SECRET_KEY` em variáveis de ambiente do frontend.
