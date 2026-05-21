@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+@theme {
+  --color-combinador-primary: #220D59;
+  --color-combinador-secondary: #87A08C;
+  --color-combinador-base: #EDF2EF;
+}
+
+body {
+  background-color: var(--color-combinador-base);
+}
