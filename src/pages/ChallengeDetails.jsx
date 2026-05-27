@@ -121,6 +121,15 @@ export default function ChallengeDetails() {
     <div className="p-6 max-w-4xl mx-auto">
       <h1 className="text-3xl font-bold mb-4">{challenge.title}</h1>
       <p className="text-gray-700 mb-6">{challenge.description}</p>
+      {Array.isArray(challenge.tags) && challenge.tags.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-6">
+          {challenge.tags.map((tag) => (
+            <span key={tag} className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">
+              #{tag}
+            </span>
+          ))}
+        </div>
+      )}
 
       {activeMatch && (
         <div className="mb-6 p-4 rounded-lg border bg-slate-50">

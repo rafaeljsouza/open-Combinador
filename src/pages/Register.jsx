@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { registerWithEmail } from '../lib/backend/authService';
 import { createInitialProfile } from '../lib/backend/profileService';
 import { useNavigate } from 'react-router-dom';
 import { BookOpen, Building2 } from 'lucide-react';
+import TagSelector from '../components/TagSelector';
+import { listTagCatalog } from '../lib/backend/tagService';
 
 const Register = () => {
   const [userType, setUserType] = useState('pesquisador'); // 'pesquisador' ou 'gestor'
@@ -22,9 +24,15 @@ const Register = () => {
     privateWhatsapp: '',
     privateNotes: '',
     sharePrivateWithResearchers: false,
-    sharePrivateWithManagers: true
+    sharePrivateWithManagers: true,
+    interestTags: [],
   });
+  const [tagSuggestions, setTagSuggestions] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    listTagCatalog().then(setTagSuggestions).catch(() => setTagSuggestions([]));
+  }, []);
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -78,6 +86,9 @@ const Register = () => {
             instagram: formData.instagram,
           },
           bio: formData.bio,
+          interestTags: formData.interestTags,
+          notifyEmailEnabled: false,
+          notifyEmailFrequency: 'daily',
           sharePrivateWithResearchers: formData.sharePrivateWithResearchers,
           sharePrivateWithManagers: formData.sharePrivateWithManagers,
           createdAt: new Date(),
@@ -198,12 +209,21 @@ const Register = () => {
           </label>
         </div>
         {userType === 'pesquisador' && (
-          <input 
-            type="text" 
-            placeholder="Resumo de sua principal Linha de Pesquisa"
-            className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-combinador-primary outline-none"
-            onChange={e => setFormData({...formData, researchLine: e.target.value})} 
-          />
+          <>
+            <input 
+              type="text" 
+              placeholder="Resumo de sua principal Linha de Pesquisa"
+              className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-combinador-primary outline-none"
+              onChange={e => setFormData({...formData, researchLine: e.target.value})} 
+            />
+            <TagSelector
+              label="Tags de interesse"
+              placeholder="Ex: logistica"
+              selectedTags={formData.interestTags}
+              onChange={(tags) => setFormData({ ...formData, interestTags: tags })}
+              suggestions={tagSuggestions}
+            />
+          </>
         )}
         <button type="submit" className="w-full bg-combinador-primary hover:brightness-110 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-slate-200">
           Finalizar Cadastro

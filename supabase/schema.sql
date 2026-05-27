@@ -95,6 +95,41 @@ create table if not exists public.solutions (
   published_at timestamptz not null default now()
 );
 
+alter table public.profiles add column if not exists interest_tags text[] not null default '{}';
+alter table public.profiles add column if not exists notify_email_enabled boolean not null default false;
+alter table public.profiles add column if not exists notify_email_frequency text not null default 'daily';
+alter table public.challenges add column if not exists tags text[] not null default '{}';
+
+create table if not exists public.tag_catalog (
+  tag text primary key,
+  usage_count integer not null default 1,
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists public.notifications (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  type text not null,
+  title text not null,
+  message text not null,
+  payload jsonb not null default '{}'::jsonb,
+  is_read boolean not null default false,
+  created_at timestamptz not null default now()
+);
+
+create table if not exists public.notification_digest_queue (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  notification_id uuid not null references public.notifications(id) on delete cascade,
+  status text not null default 'pending',
+  created_at timestamptz not null default now(),
+  sent_at timestamptz
+);
+
+create unique index if not exists notifications_unique_challenge_match
+on public.notifications (user_id, type, ((payload->>'challengeId')))
+where type = 'challenge_match';
+
 alter table public.profiles enable row level security;
 alter table public.profile_private enable row level security;
 alter table public.challenges enable row level security;
@@ -103,6 +138,9 @@ alter table public.matches enable row level security;
 alter table public.match_events enable row level security;
 alter table public.match_join_requests enable row level security;
 alter table public.solutions enable row level security;
+alter table public.tag_catalog enable row level security;
+alter table public.notifications enable row level security;
+alter table public.notification_digest_queue enable row level security;
 
 drop policy if exists profiles_public_read on public.profiles;
 create policy profiles_public_read
@@ -262,3 +300,53 @@ with check (
       and auth.uid() = any(m.participant_ids)
   )
 );
+
+drop policy if exists tag_catalog_public_read on public.tag_catalog;
+create policy tag_catalog_public_read
+on public.tag_catalog
+for select
+using (true);
+
+drop policy if exists tag_catalog_authenticated_insert on public.tag_catalog;
+create policy tag_catalog_authenticated_insert
+on public.tag_catalog
+for insert
+with check (auth.uid() is not null);
+
+drop policy if exists tag_catalog_authenticated_update on public.tag_catalog;
+create policy tag_catalog_authenticated_update
+on public.tag_catalog
+for update
+using (auth.uid() is not null)
+with check (auth.uid() is not null);
+
+drop policy if exists notifications_owner_read on public.notifications;
+create policy notifications_owner_read
+on public.notifications
+for select
+using (auth.uid() = user_id);
+
+drop policy if exists notifications_owner_update on public.notifications;
+create policy notifications_owner_update
+on public.notifications
+for update
+using (auth.uid() = user_id)
+with check (auth.uid() = user_id);
+
+drop policy if exists notifications_authenticated_insert on public.notifications;
+create policy notifications_authenticated_insert
+on public.notifications
+for insert
+with check (auth.uid() is not null);
+
+drop policy if exists digest_queue_owner_read on public.notification_digest_queue;
+create policy digest_queue_owner_read
+on public.notification_digest_queue
+for select
+using (auth.uid() = user_id);
+
+drop policy if exists digest_queue_authenticated_insert on public.notification_digest_queue;
+create policy digest_queue_authenticated_insert
+on public.notification_digest_queue
+for insert
+with check (auth.uid() is not null);

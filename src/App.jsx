@@ -1,8 +1,9 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Menu, X, User, LogOut, Info, Lightbulb,
-   ClipboardList, Users, } from 'lucide-react';
+   ClipboardList, Users, Bell } from 'lucide-react';
 import { logout, subscribeToAuthChanges } from './lib/backend/authService';
+import { getUnreadNotificationCount } from './lib/backend/notificationService';
 
 // Páginas
 import NewChallengeForm from './components/NewChallengeForm';
@@ -20,10 +21,12 @@ const ChallengeDetails = lazy(() => import('./pages/ChallengeDetails'));
 const ConnectionsDashboard = lazy(() => import('./pages/ConnectionsDashboard'));
 const MatchWorkspace = lazy(() => import('./pages/MatchWorkspace'));
 const HowItWorks = lazy(() => import('./pages/HowItWorks'));
+const Notifications = lazy(() => import('./pages/Notifications'));
 
 function App() {
   const [user, setUser] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [unreadNotifications, setUnreadNotifications] = useState(0);
   const closeMenu = () => setIsMenuOpen(false);
 
   useEffect(() => {
@@ -32,11 +35,31 @@ function App() {
     });
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    let timer;
+    async function refreshUnread() {
+      if (!user?.uid) {
+        setUnreadNotifications(0);
+        return;
+      }
+      try {
+        const count = await getUnreadNotificationCount(user.uid);
+        setUnreadNotifications(count);
+      } catch {
+        setUnreadNotifications(0);
+      }
+    }
+
+    refreshUnread();
+    if (user?.uid) timer = setInterval(refreshUnread, 30000);
+    return () => clearInterval(timer);
+  }, [user]);
   
 
   return (
     <Router>
-      <div className="min-h-screen bg-combinador-base font-sans text-slate-900">
+      <div className="min-h-screen bg-combinador-base font-sans text-slate-900 flex flex-col">
       
       {/* HEADER */}
       <header className="bg-combinador-primary border-b border-combinador-primary sticky top-0 z-50">
@@ -64,6 +87,14 @@ function App() {
               <div className="flex items-center gap-4">
                 <Link to={`/perfil/${user.uid}`} className="bg-white/10 p-2 rounded-full text-slate-100 hover:bg-white/20 transition-all">
                   <User size={20} />
+                </Link>
+                <Link to="/notificacoes" className="relative bg-white/10 p-2 rounded-full text-slate-100 hover:bg-white/20 transition-all">
+                  <Bell size={20} />
+                  {unreadNotifications > 0 && (
+                    <span className="absolute -top-1 -right-1 text-[10px] bg-red-500 text-white rounded-full px-1.5 py-0.5 leading-none">
+                      {unreadNotifications > 99 ? '99+' : unreadNotifications}
+                    </span>
+                  )}
                 </Link>
                 <Link to="/conexoes" className="text-sm font-bold text-combinador-secondary hover:text-white transition-colors">
                    Painel de Conexões
@@ -123,6 +154,9 @@ function App() {
                   <Link to="/conexoes" className="text-sm font-bold text-combinador-primary hover:text-combinador-secondary transition-colors">
                   Painel de Conexões
                   </Link>
+                  <Link to="/notificacoes" className="text-sm font-bold text-combinador-primary hover:text-combinador-secondary transition-colors">
+                  Notificações {unreadNotifications > 0 ? `(${unreadNotifications})` : ''}
+                  </Link>
                   <Link to={`/perfil/${user.uid}`} className="bg-slate-100 p-2 rounded-full text-combinador-primary hover:bg-slate-200 transition-all"></Link>
                   
                   <button onClick={() => { logout(); closeMenu(); }} className="flex items-center gap-3 text-xl font-bold text-red-500 italic">
@@ -141,7 +175,7 @@ function App() {
         )}
       </header>
 
-        <main className="max-w-7xl mx-auto px-4 py-10">
+        <main className="max-w-7xl mx-auto px-4 py-10 flex-1 w-full">
           <Suspense fallback={<div className="p-10 text-center text-slate-500">Carregando página...</div>}>
             <Routes>
               <Route path="/" element={<Home />} />
@@ -157,6 +191,7 @@ function App() {
               <Route path="/desafio/:id" element={<ChallengeDetails />} />
               <Route path="/conexoes" element={<ConnectionsDashboard />} />
               <Route path="/conexao/:matchId" element={<MatchWorkspace />} />
+              <Route path="/notificacoes" element={<Notifications currentUser={user} />} />
             </Routes>
           </Suspense>
         </main>

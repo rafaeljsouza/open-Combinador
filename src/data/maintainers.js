@@ -1,5 +1,5 @@
 export const projectLinks = {
-  repository: 'https://github.com/your-org/combinador',
+  repository: 'https://github.com/rafaeljsouza/open-Combinador',
 };
 
 export const maintainers = [

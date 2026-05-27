@@ -1,4 +1,6 @@
 import { supabase } from '../supabaseClient';
+import { normalizeTags } from '../tags';
+import { bumpTagCatalog } from './tagService';
 
 function assertSupabase() {
   if (!supabase) {
@@ -20,8 +22,11 @@ function toProfileModel(row) {
     bio: row.bio,
     researchLine: row.research_line,
     social: row.social || {},
+    interestTags: row.interest_tags || [],
     sharePrivateWithResearchers: row.share_private_with_researchers,
     sharePrivateWithManagers: row.share_private_with_managers,
+    notifyEmailEnabled: row.notify_email_enabled,
+    notifyEmailFrequency: row.notify_email_frequency,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
@@ -52,8 +57,11 @@ function toProfileRow(profile) {
     bio: profile.bio || '',
     research_line: profile.researchLine || '',
     social: profile.social || {},
+    interest_tags: normalizeTags(profile.interestTags || []),
     share_private_with_researchers: Boolean(profile.sharePrivateWithResearchers),
     share_private_with_managers: profile.sharePrivateWithManagers ?? true,
+    notify_email_enabled: Boolean(profile.notifyEmailEnabled),
+    notify_email_frequency: profile.notifyEmailFrequency || 'daily',
     updated_at: new Date().toISOString(),
   };
 }
@@ -89,6 +97,8 @@ export async function createInitialProfile(userId, payload) {
     .from('profile_private')
     .upsert(toPrivateProfileRow(privateProfile), { onConflict: 'owner_id' });
   if (privateError) throw privateError;
+
+  await bumpTagCatalog(publicProfile.interestTags || []);
 }
 
 export async function getProfileById(userId) {
@@ -137,6 +147,8 @@ export async function updateProfile(userId, publicPayload, privatePayload, shoul
       .upsert(privateRow, { onConflict: 'owner_id' });
     if (privateError) throw privateError;
   }
+
+  await bumpTagCatalog(publicPayload.interestTags || []);
 }
 
 export async function getProfilesByIds(userIds) {
@@ -159,6 +171,21 @@ export async function listResearchers() {
     .from('profiles')
     .select('*')
     .eq('user_type', 'pesquisador')
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return (data || []).map(toProfileModel);
+}
+
+export async function listResearchersByInterestTags(tags) {
+  assertSupabase();
+  const normalized = normalizeTags(tags);
+  if (normalized.length === 0) return [];
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('user_type', 'pesquisador')
+    .overlaps('interest_tags', normalized)
     .order('created_at', { ascending: false });
   if (error) throw error;
   return (data || []).map(toProfileModel);

@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createChallenge } from '../lib/backend/challengeService';
 import { getCurrentUser } from '../lib/backend/authService';
+import TagSelector from './TagSelector';
+import { listTagCatalog } from '../lib/backend/tagService';
 
 export default function NewChallengeForm() {
   const navigate = useNavigate();
@@ -11,9 +13,15 @@ export default function NewChallengeForm() {
   const [title, setTitle] = useState('');
   const [area, setArea] = useState('');
   const [description, setDescription] = useState(''); // Resumo público
+  const [tags, setTags] = useState([]);
 
   // Campos Privados
   const [privateDetails, setPrivateDetails] = useState(''); // Detalhes restritos
+  const [tagSuggestions, setTagSuggestions] = useState([]);
+
+  useEffect(() => {
+    listTagCatalog().then(setTagSuggestions).catch(() => setTagSuggestions([]));
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,6 +45,7 @@ export default function NewChallengeForm() {
         area,
         description,
         privateDetails,
+        tags,
         authorId: currentUser.uid,
       });
 
@@ -104,6 +113,14 @@ export default function NewChallengeForm() {
                   placeholder="Descreva o contexto geral do problema..."
                 />
               </div>
+
+              <TagSelector
+                label="Tags do desafio"
+                placeholder="Ex: eficiencia"
+                selectedTags={tags}
+                onChange={setTags}
+                suggestions={tagSuggestions}
+              />
             </div>
           </div>
 

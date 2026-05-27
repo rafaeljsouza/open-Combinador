@@ -6,6 +6,8 @@ import {
   updateProfile,
 } from '../lib/backend/profileService';
 import { User, ExternalLink, GraduationCap, Building, Edit3, Save, X, Globe, Linkedin, Github, Instagram } from 'lucide-react';
+import TagSelector from '../components/TagSelector';
+import { listTagCatalog } from '../lib/backend/tagService';
 
 const Profile = ({ currentUser }) => {
   const { id } = useParams();
@@ -16,6 +18,7 @@ const Profile = ({ currentUser }) => {
   const [viewerProfile, setViewerProfile] = useState(null);
   const [privateContact, setPrivateContact] = useState({});
   const [showRequiredWarning, setShowRequiredWarning] = useState(false);
+  const [tagSuggestions, setTagSuggestions] = useState([]);
 
   const isOwner = currentUser?.uid === id;
 
@@ -55,6 +58,7 @@ const Profile = ({ currentUser }) => {
       setLoading(false);
     };
     fetchProfile();
+    listTagCatalog().then(setTagSuggestions).catch(() => setTagSuggestions([]));
   }, [id, currentUser]);
 
   const handleSave = async () => {
@@ -191,12 +195,21 @@ const Profile = ({ currentUser }) => {
                   onChange={e => setEditData({...editData, bio: e.target.value})}
                 />
                 {profile.userType === 'pesquisador' && (
-                  <input 
-                    className="w-full p-2 border border-purple-200 rounded" 
-                    placeholder="Linha de Pesquisa"
-                    value={editData.researchLine} 
-                    onChange={e => setEditData({...editData, researchLine: e.target.value})}
-                  />
+                  <>
+                    <input 
+                      className="w-full p-2 border border-purple-200 rounded" 
+                      placeholder="Linha de Pesquisa"
+                      value={editData.researchLine} 
+                      onChange={e => setEditData({...editData, researchLine: e.target.value})}
+                    />
+                    <TagSelector
+                      label="Tags de interesse"
+                      placeholder="Ex: filas"
+                      selectedTags={editData.interestTags || []}
+                      onChange={(tags) => setEditData({ ...editData, interestTags: tags })}
+                      suggestions={tagSuggestions}
+                    />
+                  </>
                 )}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                   <input
@@ -268,6 +281,23 @@ const Profile = ({ currentUser }) => {
                     />
                     Compartilhar com gestores
                   </label>
+                  <label className="flex items-center gap-2 text-sm">
+                    <input
+                      type="checkbox"
+                      checked={editData.notifyEmailEnabled || false}
+                      onChange={e => setEditData({ ...editData, notifyEmailEnabled: e.target.checked })}
+                    />
+                    Receber digest por email (quando habilitado no servidor)
+                  </label>
+                  <select
+                    className="w-full p-2 border rounded"
+                    value={editData.notifyEmailFrequency || 'daily'}
+                    onChange={(e) => setEditData({ ...editData, notifyEmailFrequency: e.target.value })}
+                  >
+                    <option value="daily">Frequencia diaria</option>
+                    <option value="twice_daily">Frequencia 2x ao dia</option>
+                    <option value="weekly">Frequencia semanal</option>
+                  </select>
                 </div>
                 <div className="flex gap-2">
                   <button onClick={handleSave} className="bg-emerald-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-bold"><Save size={16}/> Salvar</button>
@@ -295,6 +325,26 @@ const Profile = ({ currentUser }) => {
                     <p className="text-combinador-primary font-semibold">{profile.researchLine}</p>
                   </div>
                 )}
+
+                {Array.isArray(profile.interestTags) && profile.interestTags.length > 0 && (
+                  <div className="mb-4">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Tags de Interesse</span>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {profile.interestTags.map((tag) => (
+                        <span key={tag} className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded">
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <div className="mb-4">
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Preferencia de Notificacao por Email</span>
+                  <p className="text-sm text-slate-600 mt-1">
+                    {profile.notifyEmailEnabled ? `Ativado (${profile.notifyEmailFrequency || 'daily'})` : 'Desativado'}
+                  </p>
+                </div>
 
                 <div className="flex flex-wrap gap-2 mb-5">
                   {profile.userType === 'pesquisador' && profile.lattes && (

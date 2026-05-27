@@ -1,5 +1,6 @@
 import React from 'react';
 import { Info, Award, ShieldCheck, Users } from 'lucide-react';
+import { maintainers, projectLinks } from '../data/maintainers';
 
 const About = () => {
   return (
@@ -22,6 +23,20 @@ const About = () => {
             <Award className="text-emerald-600 mb-4" />
             <h3 className="font-bold text-slate-900 mb-2">Objetivo</h3>
             <p className="text-sm">Transformar teses e dissertações em ferramentas práticas para cidades.</p>
+          </div>
+        </div>
+
+        <div className="p-6 bg-white border border-slate-100 rounded-2xl shadow-sm">
+          <h3 className="font-bold text-slate-900 mb-3">Mantenedores e repositório</h3>
+          <a href={projectLinks.repository} target="_blank" rel="noopener noreferrer" className="text-sm font-bold text-combinador-primary hover:underline">
+            Repositório open-source
+          </a>
+          <div className="mt-3 space-y-2">
+            {maintainers.map((person) => (
+              <p key={person.name} className="text-sm text-slate-700">
+                {person.name} - <a href={person.github} target="_blank" rel="noopener noreferrer" className="text-combinador-primary hover:underline">GitHub</a> - <a href={person.linkedin} target="_blank" rel="noopener noreferrer" className="text-combinador-primary hover:underline">LinkedIn</a>
+              </p>
+            ))}
           </div>
         </div>
 

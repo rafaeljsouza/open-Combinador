@@ -1,4 +1,7 @@
 import { supabase } from '../supabaseClient';
+import { normalizeTags } from '../tags';
+import { bumpTagCatalog } from './tagService';
+import { listResearchersByInterestTags } from './profileService';
 
 function assertSupabase() {
   if (!supabase) {
@@ -14,6 +17,7 @@ function toChallengeModel(row) {
     description: row.description,
     authorId: row.author_id,
     status: row.status,
+    tags: row.tags || [],
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
@@ -42,6 +46,7 @@ export async function getChallengeById(challengeId) {
 
 export async function createChallenge(payload) {
   assertSupabase();
+  const challengeTags = normalizeTags(payload.tags || []);
 
   const { data: challenge, error: challengeError } = await supabase
     .from('challenges')
@@ -51,6 +56,7 @@ export async function createChallenge(payload) {
       description: payload.description,
       author_id: payload.authorId,
       status: 'aberto',
+      tags: challengeTags,
     })
     .select('*')
     .single();
@@ -64,6 +70,46 @@ export async function createChallenge(payload) {
   });
 
   if (detailsError) throw detailsError;
+
+  await bumpTagCatalog(challengeTags);
+
+  const matches = await listResearchersByInterestTags(challengeTags);
+  for (const researcher of matches) {
+    const matchedTags = challengeTags.filter((tag) => (researcher.interestTags || []).includes(tag));
+
+    const { data: existingNotification, error: existingError } = await supabase
+      .from('notifications')
+      .select('id')
+      .eq('user_id', researcher.uid)
+      .eq('type', 'challenge_match')
+      .contains('payload', { challengeId: challenge.id })
+      .limit(1)
+      .maybeSingle();
+    if (existingError) throw existingError;
+    if (existingNotification) continue;
+
+    const { data: createdNotification, error: notificationError } = await supabase.from('notifications').insert({
+      user_id: researcher.uid,
+      type: 'challenge_match',
+      title: 'Novo desafio compativel com suas tags',
+      message: `O desafio "${challenge.title}" pode ser relevante para voce.`,
+      payload: {
+        challengeId: challenge.id,
+        matchedTags,
+      },
+      is_read: false,
+    }).select('id').single();
+    if (notificationError) throw notificationError;
+
+    if (researcher.notifyEmailEnabled && createdNotification?.id) {
+      const { error: queueError } = await supabase.from('notification_digest_queue').insert({
+        user_id: researcher.uid,
+        notification_id: createdNotification.id,
+        status: 'pending',
+      });
+      if (queueError) throw queueError;
+    }
+  }
 
   return toChallengeModel(challenge);
 }
