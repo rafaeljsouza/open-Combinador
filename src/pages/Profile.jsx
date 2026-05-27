@@ -78,7 +78,7 @@ const Profile = ({ currentUser }) => {
       if (missingRequired.roleLink) missingLabels.push(roleType === 'pesquisador' ? 'link do Lattes' : 'link da secretaria/orgao');
       if (missingRequired.email) missingLabels.push('email privado');
       if (missingRequired.phone) missingLabels.push('telefone');
-      alert(`Faltam informacoes obrigatorias: ${missingLabels.join(', ')}`);
+      alert(`Faltam informações obrigatórias: ${missingLabels.join(', ')}`);
       return;
     }
 
@@ -404,7 +404,7 @@ const Profile = ({ currentUser }) => {
                   ) : (
                     <div className="w-full text-center py-2">
                       <p className="text-sm text-combinador-primary font-medium mb-2 italic">
-                        Informacoes de contato protegidas.
+                        Informações de contato protegidas.
                       </p>
                       <Link to="/cadastro" className="text-combinador-primary font-bold hover:underline">
                         Faça login para conectar-se.

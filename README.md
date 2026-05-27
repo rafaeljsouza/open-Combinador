@@ -60,26 +60,26 @@ npm run build
 - Frontend must use only `VITE_SUPABASE_PUBLISHABLE_KEY`.
 - Never expose `SUPABASE_SECRET_KEY` in frontend environment variables.
 
-## Portugues
+## Português
 
-O Combinador conecta gestores publicos e pesquisadores para co-criar solucoes abertas para desafios reais do setor publico.
+O Combinador conecta gestores públicos e pesquisadores para co-criar soluções abertas para desafios reais do setor público.
 
-Originalmente feito com Firebase, esta edição foi totalmente migrada para fora de serviços Google/Firebase em runtime e usa uma stack open-source auto-hospedavel com Supabase.
+Originalmente feito com Firebase, esta edição foi totalmente migrada para fora de serviços Google/Firebase em runtime e usa uma stack open-source auto-hospedável com Supabase.
 
-### Repositorio
+### Repositório
 
-- Repositorio principal: `[https://github.com/your-org/combinador`](https://github.com/rafaeljsouza/open-Combinador) (placeholder)
+- Repositório principal: `[https://github.com/your-org/combinador`](https://github.com/rafaeljsouza/open-Combinador) (placeholder)
 - Criador: Rafael Souza
 
 ### Stack
 
 - Frontend: React + Vite
 - Backend: Supabase (Auth + Postgres + RLS)
-- Estilizacao: Tailwind CSS
+- Estilização: Tailwind CSS
 
 ### Configuração local
 
-1. Instale dependencias:
+1. Instale dependências:
 
 ```bash
 npm install
@@ -96,7 +96,7 @@ VITE_SUPABASE_PUBLISHABLE_KEY=sb_publishable_<sua_chave>
 
 - `supabase/schema.sql`
 
-4. Inicie a aplicacao:
+4. Inicie a aplicação:
 
 ```bash
 npm run dev
@@ -108,11 +108,11 @@ npm run dev
 npm run build
 ```
 
-### Contribuicao
+### Contribuição
 
 - Leia `CONTRIBUTING.md`
 - Leia `CODE_OF_CONDUCT.md`
-- Siga a direcao open-source e auto-hospedavel do projeto
+- Siga a direção open-source e auto-hospedável do projeto
 - Execute `npm run build` antes de abrir PR
 
 ### Notas de segurança

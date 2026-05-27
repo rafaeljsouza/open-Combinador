@@ -42,7 +42,7 @@ export default function Notifications({ currentUser }) {
     await loadNotifications();
   }
 
-  if (!currentUser) return <div className="p-10 text-center">Inicie sessao para ver notificacoes.</div>;
+  if (!currentUser) return <div className="p-10 text-center">Inicie sessão para ver notificações.</div>;
   if (loading) return <div className="p-10 text-center">Carregando notificacoes...</div>;
   const unreadCount = items.filter((item) => !item.isRead).length;
 
@@ -56,7 +56,7 @@ export default function Notifications({ currentUser }) {
             <Info size={14} /> Informacao sobre envio por email
           </summary>
           <p className="text-sm text-slate-600 mt-2">
-            Notificacoes de interesses em comum implementado, mas ainda nao funcional por email para poupar custos.
+            Notificações de interesses em comum implementadas, mas ainda não funcionais por email para poupar custos.
           </p>
         </details>
         {unreadCount > 0 && (

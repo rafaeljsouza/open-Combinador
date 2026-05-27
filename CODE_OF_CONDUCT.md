@@ -1,4 +1,4 @@
-# Code of Conduct / Codigo de Conduta
+# Code of Conduct / Código de Conduta
 
 ## English
 
@@ -34,36 +34,36 @@ This code applies in project spaces and in public spaces when an individual is r
 
 Report issues to the maintainers through private channels first. Reports will be reviewed and addressed fairly.
 
-## Portugues
+## Português
 
 ### Nosso compromisso
 
-Estamos comprometidos em tornar a participacao neste projeto uma experiencia livre de assedio para todas as pessoas.
+Estamos comprometidos em tornar a participação neste projeto uma experiência livre de assédio para todas as pessoas.
 
-### Nossos padroes
+### Nossos padrões
 
 Exemplos de comportamento que contribuem para um ambiente positivo:
 
-- Comunicacao respeitosa e construtiva
-- Abertura a diferentes pontos de vista e experiencias
+- Comunicação respeitosa e construtiva
+- Abertura a diferentes pontos de vista e experiências
 - Aceitar feedback com maturidade
-- Foco no que e melhor para a comunidade
+- Foco no que é melhor para a comunidade
 
-Exemplos de comportamento inaceitavel:
+Exemplos de comportamento inaceitável:
 
-- Assedio, linguagem ofensiva, ataques pessoais
-- Intimidacao publica ou privada
-- Publicacao de informacoes privadas de terceiros sem permissao
+- Assédio, linguagem ofensiva, ataques pessoais
+- Intimidação pública ou privada
+- Publicação de informações privadas de terceiros sem permissão
 - Qualquer conduta inadequada em um ambiente profissional de comunidade
 
 ### Aplicacao
 
-Os mantenedores sao responsaveis por esclarecer e aplicar este codigo de conduta e podem tomar medidas apropriadas diante de comportamento inaceitavel.
+Os mantenedores são responsáveis por esclarecer e aplicar este código de conduta e podem tomar medidas apropriadas diante de comportamento inaceitável.
 
 ### Escopo
 
-Este codigo se aplica aos espacos do projeto e a espacos publicos quando uma pessoa estiver representando o projeto.
+Este código se aplica aos espaços do projeto e a espaços públicos quando uma pessoa estiver representando o projeto.
 
 ### Reporte
 
-Reporte problemas aos mantenedores por canais privados primeiro. Os relatos serao analisados e tratados com imparcialidade.
+Reporte problemas aos mantenedores por canais privados primeiro. Os relatos serão analisados e tratados com imparcialidade.

@@ -91,8 +91,8 @@ export async function createChallenge(payload) {
     const { data: createdNotification, error: notificationError } = await supabase.from('notifications').insert({
       user_id: researcher.uid,
       type: 'challenge_match',
-      title: 'Novo desafio compativel com suas tags',
-      message: `O desafio "${challenge.title}" pode ser relevante para voce.`,
+      title: 'Novo desafio compatível com suas tags',
+      message: `O desafio "${challenge.title}" pode ser relevante para você.`,
       payload: {
         challengeId: challenge.id,
         matchedTags,

@@ -22,6 +22,9 @@ export default function MatchWorkspace() {
   const [eventType, setEventType] = useState('atualizacao_desenvolvimento');
   const [showSolutionForm, setShowSolutionForm] = useState(false);
   const [repoLink, setRepoLink] = useState('');
+  const [apiDocsUrl, setApiDocsUrl] = useState('');
+  const [licenseCode, setLicenseCode] = useState('');
+  const [licenseData, setLicenseData] = useState('');
   const [finalSummary, setFinalSummary] = useState('');
   const [visibilityFilter, setVisibilityFilter] = useState('all');
   const [typeFilter, setTypeFilter] = useState('all');
@@ -40,7 +43,7 @@ export default function MatchWorkspace() {
 
     const participantIds = match.participantIds || [];
     if (!participantIds.includes(user.uid)) {
-      alert('Acesso negado. Apenas participantes podem visualizar esta pagina.');
+      alert('Acesso negado. Apenas participantes podem visualizar esta página.');
       navigate('/');
       return;
     }
@@ -245,8 +248,8 @@ export default function MatchWorkspace() {
   };
 
   const handlePublishSolution = async () => {
-    if (!finalSummary.trim() || !repoLink.trim()) {
-      alert('Preencha o resumo final e o link do repositorio.');
+    if (!finalSummary.trim() || !repoLink.trim() || !apiDocsUrl.trim() || !licenseCode.trim() || !licenseData.trim()) {
+      alert('Preencha resumo, repositorio, documentacao da API e licencas.');
       return;
     }
     try {
@@ -255,6 +258,9 @@ export default function MatchWorkspace() {
         challengeTitle: challenge.title,
         summary: finalSummary,
         repoUrl: repoLink,
+        apiDocsUrl,
+        licenseCode,
+        licenseData,
         managerId: matchData.managerId,
         leadResearcherId: matchData.leadResearcherId,
         participantIds: matchData.participantIds || [],
@@ -273,7 +279,7 @@ export default function MatchWorkspace() {
       alert('Solucao publicada com sucesso.');
       navigate('/solucoes');
     } catch (error) {
-      console.error('Erro ao publicar solucao:', error);
+      console.error('Erro ao publicar solução:', error);
     }
   };
 
@@ -375,8 +381,47 @@ export default function MatchWorkspace() {
               onChange={(e) => setRepoLink(e.target.value)}
               placeholder="https://github.com/..."
             />
-            <label className="block mb-2 font-medium">Resumo tecnico</label>
+            <label className="block mb-2 font-medium">Documentacao da Open API</label>
+            <input
+              type="url"
+              className="w-full p-2 border rounded mb-4"
+              value={apiDocsUrl}
+              onChange={(e) => setApiDocsUrl(e.target.value)}
+              placeholder="https://... (Swagger, Postman, OpenAPI)"
+            />
+            <label className="block mb-2 font-medium">Resumo técnico</label>
             <textarea className="w-full p-2 border rounded mb-4" rows="4" value={finalSummary} onChange={(e) => setFinalSummary(e.target.value)} />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+              <div>
+                <label className="block mb-2 font-medium">Licenca do codigo</label>
+                <select
+                  className="w-full p-2 border rounded"
+                  value={licenseCode}
+                  onChange={(e) => setLicenseCode(e.target.value)}
+                >
+                  <option value="">Selecione</option>
+                  <option value="MIT">MIT</option>
+                  <option value="Apache-2.0">Apache-2.0</option>
+                  <option value="GPL-3.0">GPL-3.0</option>
+                  <option value="BSD-3-Clause">BSD-3-Clause</option>
+                  <option value="Proprietaria">Proprietaria</option>
+                </select>
+              </div>
+              <div>
+                <label className="block mb-2 font-medium">Licença de dados e documentos</label>
+                <select
+                  className="w-full p-2 border rounded"
+                  value={licenseData}
+                  onChange={(e) => setLicenseData(e.target.value)}
+                >
+                  <option value="">Selecione</option>
+                  <option value="CC-BY-4.0">CC-BY-4.0</option>
+                  <option value="CC-BY-SA-4.0">CC-BY-SA-4.0</option>
+                  <option value="CC0-1.0">CC0-1.0</option>
+                  <option value="Restrita">Restrita</option>
+                </select>
+              </div>
+            </div>
             <button onClick={handlePublishSolution} className="bg-green-700 text-white px-6 py-2 rounded hover:bg-green-800 font-bold">
               Confirmar e Publicar
             </button>
@@ -405,9 +450,9 @@ export default function MatchWorkspace() {
               <option value="mensagem_inicial">Mensagem inicial</option>
               <option value="atualizacao_desenvolvimento">Atualizacao de desenvolvimento</option>
               <option value="experimento">Experimento</option>
-              <option value="analise_dados">Analise de dados</option>
-              <option value="decisao_metodologica">Decisao metodologica</option>
-              <option value="reuniao">Reuniao</option>
+              <option value="analise_dados">Análise de dados</option>
+              <option value="decisao_metodologica">Decisão metodológica</option>
+              <option value="reuniao">Reunião</option>
               <option value="novo_participante_aprovado">Novo participante aprovado</option>
               <option value="solucao_bem_sucedida">Solucao bem sucedida</option>
             </select>
@@ -464,22 +509,22 @@ export default function MatchWorkspace() {
               <select className="w-full p-2 border rounded mb-3" value={eventType} onChange={(e) => setEventType(e.target.value)}>
                 <option value="atualizacao_desenvolvimento">Atualizacao de desenvolvimento</option>
                 <option value="experimento">Experimento</option>
-                <option value="analise_dados">Analise de dados</option>
-                <option value="decisao_metodologica">Decisao metodologica</option>
-                <option value="reuniao">Reuniao</option>
+                <option value="analise_dados">Análise de dados</option>
+                <option value="decisao_metodologica">Decisão metodológica</option>
+                <option value="reuniao">Reunião</option>
               </select>
               <textarea
                 className="w-full p-3 border rounded mb-3"
                 rows="3"
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                placeholder="Descreva o evento para manter historico de pesquisa completo..."
+                placeholder="Descreva o evento para manter histórico de pesquisa completo..."
               />
               <input
                 className="w-full p-2 border rounded mb-3"
                 value={eventTags}
                 onChange={(e) => setEventTags(e.target.value)}
-                placeholder="Tags do evento (separadas por virgula): experimento A/B, regressao, reuniao"
+                placeholder="Tags do evento (separadas por vírgula): experimento A/B, regressão, reunião"
               />
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-3">
                 <input
@@ -498,7 +543,7 @@ export default function MatchWorkspace() {
               <div className="flex items-center justify-between">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input type="checkbox" checked={makePublic} onChange={(e) => setMakePublic(e.target.checked)} className="w-4 h-4" />
-                  <span className="text-sm font-medium text-slate-700">Tornar publico no desafio</span>
+                  <span className="text-sm font-medium text-slate-700">Tornar público no desafio</span>
                 </label>
                 <button onClick={handleSendUpdate} className="bg-combinador-primary text-white px-6 py-2 rounded hover:brightness-110 font-bold">
                   Registar evento
@@ -544,7 +589,7 @@ export default function MatchWorkspace() {
                 <p className="text-xs text-slate-500">{item.generatedAt} - {item.eventsCount} eventos</p>
               </div>
             ))}
-            {recentExports.length === 0 && <p className="text-sm text-slate-500">Nenhuma exportacao nesta sessao.</p>}
+            {recentExports.length === 0 && <p className="text-sm text-slate-500">Nenhuma exportação nesta sessão.</p>}
           </div>
         </div>
 

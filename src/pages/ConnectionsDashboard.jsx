@@ -55,21 +55,21 @@ export default function ConnectionsDashboard() {
   }, []);
 
   if (loading) return <div className="p-10 text-center">Carregando painel de conexoes...</div>;
-  if (!userProfile) return <div className="p-10 text-center">Perfil nao encontrado.</div>;
+  if (!userProfile) return <div className="p-10 text-center">Perfil não encontrado.</div>;
 
   return (
     <div className="max-w-4xl mx-auto py-10 px-4">
       <div className="mb-8">
-        <h1 className="text-3xl font-black text-slate-900">Painel de Conexoes</h1>
+        <h1 className="text-3xl font-black text-slate-900">Painel de Conexões</h1>
         <p className="text-slate-600">
-          Gerencie suas propostas de pesquisa e solucoes em andamento.
+          Gerencie suas propostas de pesquisa e soluções em andamento.
         </p>
       </div>
 
       {matches.length === 0 ? (
         <div className="bg-white p-10 rounded-2xl border-2 border-dashed border-slate-200 text-center">
           <MessageSquare className="mx-auto text-slate-300 mb-4" size={48} />
-          <p className="text-lg font-medium text-slate-600">Nenhuma conexao iniciada ainda.</p>
+          <p className="text-lg font-medium text-slate-600">Nenhuma conexão iniciada ainda.</p>
           <Link to="/desafios" className="text-combinador-primary font-bold hover:underline mt-2 inline-block">
             Explorar desafios disponiveis
           </Link>

@@ -1,4 +1,4 @@
-# Contributing / Contribuicao
+# Contributing / Contribuição
 
 ## English
 
@@ -62,21 +62,21 @@ Please include:
 
 If you discover a sensitive issue, report it privately to the maintainers first.
 
-## Portugues
+## Português
 
 Obrigado por contribuir com o Combinador.
 
 ### Regras gerais
 
-- Mantenha o projeto totalmente open-source e auto-hospedavel.
-- Nao reintroduza dependencias de runtime Google/Firebase.
+- Mantenha o projeto totalmente open-source e auto-hospedável.
+- Não reintroduza dependências de runtime Google/Firebase.
 - Prefira pull requests pequenas e focadas.
 
-### Configuracao de desenvolvimento
+### Configuração de desenvolvimento
 
-1. Faca fork do repositorio.
+1. Faça fork do repositório.
 2. Clone seu fork.
-3. Instale dependencias:
+3. Instale dependências:
 
 ```bash
 npm install
@@ -90,36 +90,36 @@ npm install
 npm run dev
 ```
 
-### Padrao de branch e commit
+### Padrão de branch e commit
 
 - Crie branch a partir de `main`:
-  - `feat/<topico-curto>`
-  - `fix/<topico-curto>`
-  - `docs/<topico-curto>`
+  - `feat/<tópico-curto>`
+  - `fix/<tópico-curto>`
+  - `docs/<tópico-curto>`
 - Escreva commits claros no imperativo.
-- Evite refactors nao relacionados no mesmo PR.
+- Evite refactors não relacionados no mesmo PR.
 
 ### Checklist de pull request
 
-- [ ] Feature/correcao esta delimitada e documentada
+- [ ] Feature/correção está delimitada e documentada
 - [ ] `npm run build` passa localmente
 - [ ] Nenhum segredo/chave foi commitado
-- [ ] Mudancas de schema Supabase estao em `supabase/schema.sql` quando necessario
-- [ ] Mudancas de UI incluem screenshots (desktop + mobile) quando relevante
+- [ ] Mudanças de schema Supabase estão em `supabase/schema.sql` quando necessário
+- [ ] Mudanças de UI incluem screenshots (desktop + mobile) quando relevante
 
 ### Reporte de bugs
 
 Inclua:
 
-- o que voce esperava
+- o que você esperava
 - o que aconteceu
-- passos de reproducao
+- passos de reprodução
 - navegador/SO
 - erros relevantes de console/rede
 
-### Seguranca
+### Segurança
 
-- Nunca exponha chaves secretas em variaveis de frontend.
-- Use apenas `VITE_SUPABASE_PUBLISHABLE_KEY` no codigo do navegador.
+- Nunca exponha chaves secretas em variáveis de frontend.
+- Use apenas `VITE_SUPABASE_PUBLISHABLE_KEY` no código do navegador.
 
-Se descobrir uma vulnerabilidade sensivel, reporte primeiro em canal privado para os mantenedores.
+Se descobrir uma vulnerabilidade sensível, reporte primeiro em canal privado para os mantenedores.

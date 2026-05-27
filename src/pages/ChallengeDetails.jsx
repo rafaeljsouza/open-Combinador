@@ -55,11 +55,11 @@ export default function ChallengeDetails() {
 
   const handleInitialContact = async () => {
     if (!currentUser) {
-      alert('Por favor, inicie sessao para propor uma solucao.');
+      alert('Por favor, inicie sessão para propor uma solução.');
       return;
     }
     if (!message.trim()) {
-      alert('A mensagem nao pode estar vazia.');
+      alert('A mensagem não pode estar vazia.');
       return;
     }
 
@@ -74,11 +74,11 @@ export default function ChallengeDetails() {
           message,
         });
 
-        alert('Contato inicial criado. Agora voce e o gestor ja possuem um ambiente colaborativo.');
+        alert('Contato inicial criado. Agora você e o gestor já possuem um ambiente colaborativo.');
       } else {
         const alreadyParticipant = (activeMatch.participantIds || []).includes(currentUser.uid);
         if (alreadyParticipant) {
-          alert('Voce ja participa deste esforco. Acesse o ambiente de trabalho.');
+          alert('Você já participa deste esforço. Acesse o ambiente de trabalho.');
           return;
         }
 
@@ -108,12 +108,55 @@ export default function ChallengeDetails() {
       await fetchData();
     } catch (error) {
       console.error('Erro ao cancelar pedido:', error);
-      alert('Nao foi possivel cancelar o pedido.');
+      alert('Não foi possível cancelar o pedido.');
     }
   };
 
-  if (loading) return <div>A carregar informacoes...</div>;
-  if (!challenge) return <div>Desafio nao encontrado.</div>;
+  const downloadFile = (content, fileName, mimeType) => {
+    const blob = new Blob([content], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const exportOpenDataJson = () => {
+    const payload = {
+      challenge: {
+        id: challenge.id,
+        title: challenge.title,
+        description: challenge.description,
+        area: challenge.area,
+        tags: challenge.tags || [],
+        status: challenge.status,
+      },
+      publicEvents: events.map((ev) => ({
+        id: ev.id,
+        type: ev.type,
+        content: ev.content,
+        tags: ev.tags || [],
+        createdAt: ev.createdAt,
+      })),
+      exportedAt: new Date().toISOString(),
+      note: 'Dados públicos exportados para reprodução e ciência aberta.',
+    };
+    downloadFile(JSON.stringify(payload, null, 2), `desafio-${challenge.id}-open-data.json`, 'application/json;charset=utf-8');
+  };
+
+  const exportOpenDataCsv = () => {
+    const rows = ['event_id,tipo,conteudo,tags,created_at'];
+    for (const ev of events) {
+      const content = (ev.content || '').replaceAll('"', '""');
+      const tags = (ev.tags || []).join('|').replaceAll('"', '""');
+      rows.push(`"${ev.id}","${ev.type}","${content}","${tags}","${ev.createdAt || ''}"`);
+    }
+    downloadFile(rows.join('\n'), `desafio-${challenge.id}-open-data.csv`, 'text/csv;charset=utf-8');
+  };
+
+  if (loading) return <div>A carregar informações...</div>;
+  if (!challenge) return <div>Desafio não encontrado.</div>;
 
   const iAmParticipant = currentUser && activeMatch?.participantIds?.includes(currentUser.uid);
 
@@ -130,6 +173,14 @@ export default function ChallengeDetails() {
           ))}
         </div>
       )}
+
+      <div className="mb-6 p-4 rounded-lg border bg-slate-50">
+        <p className="text-xs font-bold uppercase tracking-wide text-slate-500 mb-2">Metadados FAIR</p>
+        <p className="text-sm text-slate-700">Findable: título, área, tags e URL permanente deste desafio.</p>
+        <p className="text-sm text-slate-700">Accessible: exportação de dados abertos públicos em JSON e CSV.</p>
+        <p className="text-sm text-slate-700">Interoperable: soluções finais exigem documentação de Open API.</p>
+        <p className="text-sm text-slate-700">Reusable: publicação de licenças de código e dados na solução.</p>
+      </div>
 
       {activeMatch && (
         <div className="mb-6 p-4 rounded-lg border bg-slate-50">
@@ -160,9 +211,15 @@ export default function ChallengeDetails() {
       <hr className="my-8" />
 
       <div className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4">Linha do Tempo Publica</h2>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+          <h2 className="text-2xl font-semibold">Linha do Tempo Publica</h2>
+          <div className="flex items-center gap-2">
+            <button onClick={exportOpenDataJson} className="text-xs bg-slate-900 text-white px-3 py-1.5 rounded">Exportar JSON</button>
+            <button onClick={exportOpenDataCsv} className="text-xs bg-slate-900 text-white px-3 py-1.5 rounded">Exportar CSV</button>
+          </div>
+        </div>
         {events.length === 0 ? (
-          <p className="text-gray-500">Nenhum evento publico registado ate ao momento.</p>
+          <p className="text-gray-500">Nenhum evento público registado até ao momento.</p>
         ) : (
           <ul className="space-y-4">
             {events.map((ev) => (
@@ -170,7 +227,7 @@ export default function ChallengeDetails() {
                 <span className="font-bold block text-sm text-combinador-primary">{ev.type.replace('_', ' ').toUpperCase()}</span>
                 <p className="mt-2">{ev.content}</p>
                 <small className="text-gray-400 mt-2 block">
-                  {ev.createdAt ? new Date(ev.createdAt).toLocaleDateString() : 'Data nao disponivel'}
+                  {ev.createdAt ? new Date(ev.createdAt).toLocaleDateString() : 'Data não disponível'}
                 </small>
               </li>
             ))}
@@ -190,7 +247,7 @@ export default function ChallengeDetails() {
         <textarea
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          placeholder="Descreva sua linha de pesquisa, contribuicao e motivacao para entrar no desafio..."
+          placeholder="Descreva sua linha de pesquisa, contribuição e motivação para entrar no desafio..."
           className="w-full p-3 border rounded mb-4"
           rows={4}
         />
