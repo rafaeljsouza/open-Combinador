@@ -46,6 +46,7 @@ export async function getChallengeById(challengeId) {
 
 export async function createChallenge(payload) {
   assertSupabase();
+  // Normalize once and reuse everywhere so matching, search, and catalog counts stay consistent.
   const challengeTags = normalizeTags(payload.tags || []);
 
   const { data: challenge, error: challengeError } = await supabase
@@ -73,10 +74,12 @@ export async function createChallenge(payload) {
 
   await bumpTagCatalog(challengeTags);
 
+  // Interest matching is deterministic (tags overlap), with no AI ranking in this step.
   const matches = await listResearchersByInterestTags(challengeTags);
   for (const researcher of matches) {
     const matchedTags = challengeTags.filter((tag) => (researcher.interestTags || []).includes(tag));
 
+    // App-level dedup check complements DB unique index to avoid duplicate alerts from retries.
     const { data: existingNotification, error: existingError } = await supabase
       .from('notifications')
       .select('id')
@@ -101,6 +104,7 @@ export async function createChallenge(payload) {
     }).select('id').single();
     if (notificationError) throw notificationError;
 
+    // Email sending is currently disabled by policy/cost, but queue records preserve digest readiness.
     if (researcher.notifyEmailEnabled && createdNotification?.id) {
       const { error: queueError } = await supabase.from('notification_digest_queue').insert({
         user_id: researcher.uid,

@@ -89,11 +89,18 @@ create table if not exists public.solutions (
   challenge_title text not null,
   summary text not null,
   repo_url text not null,
+  api_docs_url text not null default '',
+  license_code text not null default '',
+  license_data text not null default '',
   manager_id uuid references auth.users(id) on delete set null,
   lead_researcher_id uuid references auth.users(id) on delete set null,
   participant_ids uuid[] not null default '{}',
   published_at timestamptz not null default now()
 );
+
+alter table public.solutions add column if not exists api_docs_url text not null default '';
+alter table public.solutions add column if not exists license_code text not null default '';
+alter table public.solutions add column if not exists license_data text not null default '';
 
 alter table public.profiles add column if not exists interest_tags text[] not null default '{}';
 alter table public.profiles add column if not exists notify_email_enabled boolean not null default false;

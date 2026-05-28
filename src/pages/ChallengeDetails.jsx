@@ -123,6 +123,7 @@ export default function ChallengeDetails() {
   };
 
   const exportOpenDataJson = () => {
+    // Export includes only challenge public fields and public timeline events.
     const payload = {
       challenge: {
         id: challenge.id,
@@ -146,6 +147,7 @@ export default function ChallengeDetails() {
   };
 
   const exportOpenDataCsv = () => {
+    // CSV escaping keeps exported text valid even when event content contains quotes.
     const rows = ['event_id,tipo,conteudo,tags,created_at'];
     for (const ev of events) {
       const content = (ev.content || '').replaceAll('"', '""');
@@ -212,7 +214,7 @@ export default function ChallengeDetails() {
 
       <div className="mb-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-          <h2 className="text-2xl font-semibold">Linha do Tempo Publica</h2>
+          <h2 className="text-2xl font-semibold">Linha do Tempo Pública</h2>
           <div className="flex items-center gap-2">
             <button onClick={exportOpenDataJson} className="text-xs bg-slate-900 text-white px-3 py-1.5 rounded">Exportar JSON</button>
             <button onClick={exportOpenDataCsv} className="text-xs bg-slate-900 text-white px-3 py-1.5 rounded">Exportar CSV</button>

@@ -555,7 +555,7 @@ export default function MatchWorkspace() {
 
         <div className="bg-white border rounded-xl p-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
-            <h3 className="text-lg font-bold text-slate-900">Historico de pedidos de participacao</h3>
+            <h3 className="text-lg font-bold text-slate-900">Histórico de pedidos de participação</h3>
             <select className="p-2 border rounded" value={requestStatusFilter} onChange={(e) => setRequestStatusFilter(e.target.value)}>
               <option value="all">Todos os status</option>
               <option value="pending">Pendentes</option>

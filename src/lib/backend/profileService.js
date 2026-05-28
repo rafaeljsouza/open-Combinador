@@ -57,6 +57,7 @@ function toProfileRow(profile) {
     bio: profile.bio || '',
     research_line: profile.researchLine || '',
     social: profile.social || {},
+    // Store canonical tags to keep matching and catalog stats stable across casing/spacing variants.
     interest_tags: normalizeTags(profile.interestTags || []),
     share_private_with_researchers: Boolean(profile.sharePrivateWithResearchers),
     share_private_with_managers: profile.sharePrivateWithManagers ?? true,
@@ -138,6 +139,7 @@ export async function updateProfile(userId, publicPayload, privatePayload, shoul
   if (profileError) throw profileError;
 
   if (shouldUpdatePrivate) {
+    // Private contact data is persisted separately so public profile reads never include sensitive fields.
     const privateRow = toPrivateProfileRow({
       ...privatePayload,
       ownerId: userId,

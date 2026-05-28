@@ -15,7 +15,7 @@ const ChallengeCard = ({ challenge }) => {
       
       <div className="flex items-center text-slate-500 text-sm mb-4">
         <Building2 size={16} className="mr-2" />
-        {challenge.area || 'Area nao informada'}
+        {challenge.area || 'Área não informada'}
       </div>
 
       <p className="text-slate-600 text-sm mb-4 line-clamp-2">

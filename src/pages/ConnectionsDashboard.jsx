@@ -94,7 +94,7 @@ export default function ConnectionsDashboard() {
                 to={`/conexao/${match.id}`}
                 className="flex items-center justify-center gap-2 bg-slate-900 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-slate-800 transition-colors shrink-0"
               >
-                Acessar Historico <ArrowRight size={18} />
+                Acessar Histórico <ArrowRight size={18} />
               </Link>
             </div>
           ))}

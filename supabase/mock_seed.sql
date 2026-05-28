@@ -14,12 +14,12 @@
 begin;
 
 -- Replace these IDs
--- manager user
---   338f4e35-ea20-4e09-a38d-a3e286e2634b
--- researcher A user
---   e9f58b3b-8bdf-4b03-b0a7-01c2f0315e96
--- researcher B user
---   d1a4a145-a34a-4345-b6d0-1f51746603d7
+-- manager:
+--   11111111-1111-1111-1111-111111111111
+-- researcher A:
+--   22222222-2222-2222-2222-222222222222
+-- researcher B:
+--   33333333-3333-3333-3333-333333333333
 
 -- deterministic IDs for mock entities
 -- challenge 1
@@ -94,7 +94,7 @@ set
   notify_email_enabled = false,
   notify_email_frequency = 'daily',
   updated_at = now()
-where id = '338f4e35-ea20-4e09-a38d-a3e286e2634b';
+where id = '11111111-1111-1111-1111-111111111111';
 
 update public.profiles
 set
@@ -106,7 +106,7 @@ set
   notify_email_enabled = true,
   notify_email_frequency = 'daily',
   updated_at = now()
-where id = 'e9f58b3b-8bdf-4b03-b0a7-01c2f0315e96';
+where id = '22222222-2222-2222-2222-222222222222';
 
 update public.profiles
 set
@@ -118,7 +118,7 @@ set
   notify_email_enabled = true,
   notify_email_frequency = 'daily',
   updated_at = now()
-where id = 'd1a4a145-a34a-4345-b6d0-1f51746603d7';
+where id = '33333333-3333-3333-3333-333333333333';
 
 -- tag catalog (for selector suggestions)
 insert into public.tag_catalog(tag, usage_count, updated_at)
@@ -142,7 +142,7 @@ values (
   'Problema exemplo: filas em unidades de atendimento',
   'Logistica',
   'A prefeitura precisa reduzir o tempo médio de espera em unidades de atendimento sem aumentar equipe.',
-  '338f4e35-ea20-4e09-a38d-a3e286e2634b',
+  '11111111-1111-1111-1111-111111111111',
   'aberto',
   array['filas','eficiencia','logistica'],
   now() - interval '20 days',
@@ -155,7 +155,7 @@ insert into public.challenge_details(
 values (
   'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1',
   'Dados internos incluem fluxo horário e categorias de atendimento. Dados pessoais devem permanecer anonimizados.',
-  '338f4e35-ea20-4e09-a38d-a3e286e2634b',
+  '11111111-1111-1111-1111-111111111111',
   now() - interval '20 days',
   now() - interval '20 days'
 );
@@ -169,7 +169,7 @@ values (
   'Problema exemplo: previsão de demanda em UBS',
   'Saude Publica',
   'Necessidade de prever demanda semanal para reduzir falta de insumos e melhorar escala.',
-  '338f4e35-ea20-4e09-a38d-a3e286e2634b',
+  '11111111-1111-1111-1111-111111111111',
   'aberto',
   array['saude-publica','predicao','analise-dados'],
   now() - interval '12 days',
@@ -182,7 +182,7 @@ insert into public.challenge_details(
 values (
   'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2',
   'Bases de consumo e agendamento com granularidade diária. Dados sensíveis precisam de mascaramento.',
-  '338f4e35-ea20-4e09-a38d-a3e286e2634b',
+  '11111111-1111-1111-1111-111111111111',
   now() - interval '12 days',
   now() - interval '12 days'
 );
@@ -194,12 +194,12 @@ insert into public.matches(
 values (
   'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1',
   'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1',
-  '338f4e35-ea20-4e09-a38d-a3e286e2634b',
-  'e9f58b3b-8bdf-4b03-b0a7-01c2f0315e96',
+  '11111111-1111-1111-1111-111111111111',
+  '22222222-2222-2222-2222-222222222222',
   array[
-    '338f4e35-ea20-4e09-a38d-a3e286e2634b'::uuid,
-    'e9f58b3b-8bdf-4b03-b0a7-01c2f0315e96'::uuid,
-    'd1a4a145-a34a-4345-b6d0-1f51746603d7'::uuid
+    '11111111-1111-1111-1111-111111111111'::uuid,
+    '22222222-2222-2222-2222-222222222222'::uuid,
+    '33333333-3333-3333-3333-333333333333'::uuid
   ],
   'bem_sucedido',
   now() - interval '18 days',
@@ -216,7 +216,7 @@ values
     'Hipótese inicial: redistribuir janelas de atendimento e separar fila rápida para demandas simples.',
     array['hipotese','filas'],
     true,
-    'e9f58b3b-8bdf-4b03-b0a7-01c2f0315e96',
+    '22222222-2222-2222-2222-222222222222',
     now() - interval '18 days'
   ),
   (
@@ -227,7 +227,7 @@ values
     'Análise de 6 meses de dados anonimizados indicou pico entre 9h e 11h.',
     array['dados','analise-dados'],
     true,
-    'e9f58b3b-8bdf-4b03-b0a7-01c2f0315e96',
+    '22222222-2222-2222-2222-222222222222',
     now() - interval '15 days'
   ),
   (
@@ -238,7 +238,7 @@ values
     'Teste A/B em duas unidades por 2 semanas mostrou redução média de 21 por cento no tempo de espera.',
     array['experimento','eficiencia'],
     true,
-    'd1a4a145-a34a-4345-b6d0-1f51746603d7',
+    '33333333-3333-3333-3333-333333333333',
     now() - interval '10 days'
   ),
   (
@@ -249,7 +249,7 @@ values
     'Decisão: priorizar algoritmo simples e explicável para adoção rápida pela equipe operacional.',
     array['metodologia','governanca'],
     true,
-    '338f4e35-ea20-4e09-a38d-a3e286e2634b',
+    '11111111-1111-1111-1111-111111111111',
     now() - interval '8 days'
   ),
   (
@@ -260,7 +260,7 @@ values
     'Solução validada e publicada com documentação de API e licenças abertas.',
     array['resultado','open-science'],
     true,
-    'e9f58b3b-8bdf-4b03-b0a7-01c2f0315e96',
+    '22222222-2222-2222-2222-222222222222',
     now() - interval '2 days'
   );
 
@@ -287,12 +287,12 @@ values (
   'https://api.exemplo.gov/docs/fila-atendimento',
   'MIT',
   'CC-BY-4.0',
-  '338f4e35-ea20-4e09-a38d-a3e286e2634b',
-  'e9f58b3b-8bdf-4b03-b0a7-01c2f0315e96',
+  '11111111-1111-1111-1111-111111111111',
+  '22222222-2222-2222-2222-222222222222',
   array[
-    '338f4e35-ea20-4e09-a38d-a3e286e2634b'::uuid,
-    'e9f58b3b-8bdf-4b03-b0a7-01c2f0315e96'::uuid,
-    'd1a4a145-a34a-4345-b6d0-1f51746603d7'::uuid
+    '11111111-1111-1111-1111-111111111111'::uuid,
+    '22222222-2222-2222-2222-222222222222'::uuid,
+    '33333333-3333-3333-3333-333333333333'::uuid
   ],
   now() - interval '2 days'
 );
@@ -304,11 +304,11 @@ insert into public.matches(
 values (
   'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb2',
   'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2',
-  '338f4e35-ea20-4e09-a38d-a3e286e2634b',
-  'd1a4a145-a34a-4345-b6d0-1f51746603d7',
+  '11111111-1111-1111-1111-111111111111',
+  '33333333-3333-3333-3333-333333333333',
   array[
-    '338f4e35-ea20-4e09-a38d-a3e286e2634b'::uuid,
-    'd1a4a145-a34a-4345-b6d0-1f51746603d7'::uuid
+    '11111111-1111-1111-1111-111111111111'::uuid,
+    '33333333-3333-3333-3333-333333333333'::uuid
   ],
   'contato_inicial',
   now() - interval '10 days',
@@ -325,7 +325,7 @@ values
     'Proposta inicial para modelo de previsão de demanda semanal com variáveis sazonais.',
     array['predicao','saude-publica'],
     true,
-    'd1a4a145-a34a-4345-b6d0-1f51746603d7',
+    '33333333-3333-3333-3333-333333333333',
     now() - interval '10 days'
   );
 
@@ -339,7 +339,7 @@ values
     'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeee1',
     'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb2',
     'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2',
-    'e9f58b3b-8bdf-4b03-b0a7-01c2f0315e96',
+    '22222222-2222-2222-2222-222222222222',
     'Posso contribuir com avaliação de qualidade de dados e validação de métricas.',
     false,
     false,
@@ -351,7 +351,7 @@ values
     'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeee2',
     'bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1',
     'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1',
-    'd1a4a145-a34a-4345-b6d0-1f51746603d7',
+    '33333333-3333-3333-3333-333333333333',
     'Contribuição em análise estatística e visualização de resultados.',
     true,
     true,
@@ -365,7 +365,7 @@ insert into public.notifications(id, user_id, type, title, message, payload, is_
 values
   (
     'dddddddd-dddd-dddd-dddd-ddddddddddd1',
-    'e9f58b3b-8bdf-4b03-b0a7-01c2f0315e96',
+    '22222222-2222-2222-2222-222222222222',
     'challenge_match',
     'Novo desafio compatível com suas tags',
     'O desafio de previsão em UBS pode ser relevante para você.',
@@ -375,7 +375,7 @@ values
   ),
   (
     'dddddddd-dddd-dddd-dddd-ddddddddddd2',
-    'd1a4a145-a34a-4345-b6d0-1f51746603d7',
+    '33333333-3333-3333-3333-333333333333',
     'challenge_match',
     'Novo desafio compatível com suas tags',
     'O desafio de filas em atendimento combina com suas competências.',
@@ -387,7 +387,7 @@ values
 insert into public.notification_digest_queue(id, user_id, notification_id, status, created_at, sent_at)
 values (
   '99999999-9999-9999-9999-999999999991',
-  'e9f58b3b-8bdf-4b03-b0a7-01c2f0315e96',
+  '22222222-2222-2222-2222-222222222222',
   'dddddddd-dddd-dddd-dddd-ddddddddddd1',
   'pending',
   now() - interval '2 days',

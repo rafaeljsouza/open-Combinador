@@ -41,6 +41,9 @@ function toSolutionModel(row) {
     challengeTitle: row.challenge_title,
     summary: row.summary,
     repoUrl: row.repo_url,
+    apiDocsUrl: row.api_docs_url,
+    licenseCode: row.license_code,
+    licenseData: row.license_data,
     managerId: row.manager_id,
     leadResearcherId: row.lead_researcher_id,
     participantIds: row.participant_ids || [],
@@ -144,6 +147,7 @@ export async function getMyJoinRequest(matchId, requesterId) {
 
 export async function createInitialContact(payload) {
   assertSupabase();
+  // Participant list starts with manager + lead researcher and grows as requests are approved.
   const participantIds = [payload.managerId, payload.leadResearcherId].filter(Boolean);
 
   const { data: match, error: matchError } = await supabase
@@ -222,6 +226,7 @@ export async function addMatchEvent(payload) {
 
 export async function updateJoinRequest(joinRequestId, patch) {
   assertSupabase();
+  // Partial patch keeps role approvals independent and avoids overwriting unrelated fields.
   const payload = { updated_at: new Date().toISOString() };
   if (typeof patch.status !== 'undefined') payload.status = patch.status;
   if (typeof patch.managerApproved !== 'undefined') payload.manager_approved = patch.managerApproved;
@@ -255,6 +260,7 @@ export async function updateMatch(matchId, patch) {
 
 export async function publishSolution(payload) {
   assertSupabase();
+  // FAIR-critical metadata is stored with each solution for downstream filtering/export.
   const { data, error } = await supabase
     .from('solutions')
     .insert({
@@ -262,6 +268,9 @@ export async function publishSolution(payload) {
       challenge_title: payload.challengeTitle,
       summary: payload.summary,
       repo_url: payload.repoUrl,
+      api_docs_url: payload.apiDocsUrl,
+      license_code: payload.licenseCode,
+      license_data: payload.licenseData,
       manager_id: payload.managerId,
       lead_researcher_id: payload.leadResearcherId,
       participant_ids: payload.participantIds || [],

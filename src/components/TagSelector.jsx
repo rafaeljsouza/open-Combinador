@@ -68,7 +68,7 @@ export default function TagSelector({
       <div>
         <p className="text-xs text-slate-500 mb-1">Tags sugeridas</p>
         <div className="flex flex-wrap gap-2">
-          {filteredSuggestions.length === 0 && <span className="text-xs text-slate-400">Sem sugestoes para este filtro.</span>}
+          {filteredSuggestions.length === 0 && <span className="text-xs text-slate-400">Sem sugestões para este filtro.</span>}
           {filteredSuggestions.map((tag) => (
             <button
               key={tag}

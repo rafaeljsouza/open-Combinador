@@ -52,6 +52,7 @@ npm run build
 
 - Read `CONTRIBUTING.md`
 - Read `CODE_OF_CONDUCT.md`
+- Read architecture docs in `docs/`
 - Follow the open-source/self-hostable direction
 - Run `npm run build` before opening a PR
 
@@ -112,6 +113,7 @@ npm run build
 
 - Leia `CONTRIBUTING.md`
 - Leia `CODE_OF_CONDUCT.md`
+- Leia a documentação técnica em `docs/`
 - Siga a direção open-source e auto-hospedável do projeto
 - Execute `npm run build` antes de abrir PR
 
