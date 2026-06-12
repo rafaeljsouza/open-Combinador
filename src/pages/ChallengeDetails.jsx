@@ -157,7 +157,7 @@ export default function ChallengeDetails() {
     downloadFile(rows.join('\n'), `desafio-${challenge.id}-open-data.csv`, 'text/csv;charset=utf-8');
   };
 
-  if (loading) return <div>A carregar informações...</div>;
+  if (loading) return <div>Carregando informações...</div>;
   if (!challenge) return <div>Desafio não encontrado.</div>;
 
   const iAmParticipant = currentUser && activeMatch?.participantIds?.includes(currentUser.uid);

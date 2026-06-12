@@ -48,7 +48,7 @@ export default function HowItWorks() {
               </a>
             </h3>
             <p className="text-sm text-slate-600">
-              Nenhum governo deve ser refém de "caixas pretas" (<em>vendor lock-in</em>). Mesmo que a solução final seja proprietária, se ela for uma solução de TI, ela <strong>deve</strong> possuir uma API aberta e documentada.
+              Nenhum governo deve ser refém de "caixas pretas" (<em>vendor lock-in</em>). Mesmo que a solução final seja proprietária, ela <strong>deve</strong> possuir uma API aberta e documentada.
             </p>
           </div>
         </div>
