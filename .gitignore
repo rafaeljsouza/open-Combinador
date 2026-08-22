@@ -24,7 +24,13 @@ dist-ssr
 *.sw?
 rules.txt
 problem.txt
+next.md
 .env
+
+# Local AI/tooling files
+.opencode/
+opencode.json
+opencode.jsonc
+
 open-Combinador-v0.9.1-deposit.zip.sha256
 open-Combinador-v0.9.1-deposit.zip
-
