@@ -176,7 +176,8 @@ const Register = () => {
           onChange={e => setFormData({...formData, bio: e.target.value})} />
 
         <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
-          <p className="text-sm font-bold text-slate-700">Contato privado (opcional)</p>
+          <p className="text-sm font-bold text-slate-700">Contato privado</p>
+          <p className="text-xs font-bold text-slate-500">Obrigatório para o cadastro, mas o compartilhamento é opcional.</p>
 
           <input type="email" placeholder="Email privado *" required className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-combinador-primary outline-none"
             onChange={e => setFormData({...formData, privateEmail: e.target.value})} />
